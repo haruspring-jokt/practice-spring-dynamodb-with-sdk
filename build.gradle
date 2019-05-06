@@ -1,0 +1,48 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.4.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.haruspring.sample.dynamodb'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencyManagement {
+	imports {
+		mavenBom 'software.amazon.awssdk:bom:2.0.0'
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+//	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-dynamodb
+//	compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb'
+//	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-core
+//	compile group: 'com.amazonaws', name: 'aws-java-sdk-core'
+//
+//	compile group: 'software.amazon.awssdk', name: 'dynamodb', version: '2.0.0-preview-11'
+//	// aws
+//    compile 'software.amazon.awssdk:kinesis'
+
+	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk
+	compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.546'
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: '1.11.546'
+
+}
