@@ -31,4 +31,9 @@ dependencies {
 	compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.546'
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: '1.11.546'
 
+	// swagger
+	compile "io.springfox:springfox-swagger2:2.9.2"
+	compile "io.springfox:springfox-swagger-ui:2.9.2"
+	compile "io.springfox:springfox-core:2.9.2"
+
 }
