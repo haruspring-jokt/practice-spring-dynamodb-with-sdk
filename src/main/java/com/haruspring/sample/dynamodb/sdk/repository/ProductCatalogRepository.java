@@ -28,10 +28,6 @@ public class ProductCatalogRepository extends DynamoDBConfig {
     List<ProductCatalogDao> items =
         mapper.scan(ProductCatalogDao.class, new DynamoDBScanExpression());
 
-    //    for (ProductCatalogDao item : items) {
-    //      System.out.println(item.getTitle());
-    //    }
-
     return items;
   }
 
@@ -43,7 +39,7 @@ public class ProductCatalogRepository extends DynamoDBConfig {
   public void scanItemsByLowestId(String lowestId) {
     DynamoDBMapper mapper = super.setupMapper();
 
-    Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+    Map<String, AttributeValue> eav = new HashMap<>();
     eav.put(":val1", new AttributeValue().withN(lowestId));
 
     DynamoDBScanExpression scanExpression =

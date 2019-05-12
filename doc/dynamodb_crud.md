@@ -1,136 +1,176 @@
-# dynamoDB の CRUD 操作
+## dynamoDB の CRUD 操作
 
-## repository クラスの作成
+以下を参考に mapper を使ったデータアクセスを実装する。
 
-`com.haruspring.sample.dynamodb.sdk.repository.ProductCatalogRepository`クラスを作成する。DynamoDB のクライアントオブジェクトを取得するための private メソッドを作成しておく。
+https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/HigherLevelInterfaces.html
+
+### 設定クラスの作成
 
 ```java
-/**
- * ProductCatalogテーブルに対応するリポジトリクラス。
- */
-@Repository
-public class ProductCatalogRepository {
+package com.haruspring.sample.dynamodb.sdk.config;
 
-  // @valueを使用してapplication.ymlからconfig情報を取得する。
+/** DynamoDBの設定クラス。 */
+public class DynamoDBConfig {
 
   @Value("${amazon.dynamodb.endpoint}")
   private String amazonDynamoDBEndpoint;
-
-  @Value("${amazon.aws.accesskey}")
-  private String amazonAWSAccessKey;
-
-  @Value("${amazon.aws.secretkey}")
-  private String amazonAWSSecretKey;
 
   @Value("${amazon.dynamodb.region}")
   private String amazonDynamoDBRegion;
 
   /**
-   * DynamoDB上のテーブル名
+   * DynamoDBMapperのセットアップを行う。 appilcation.ymlにamazon.dynamodb.endpoint,
+   * amazon.dynamodb.regionを設定している必要がある。
+   *
+   * @return DynamoDBMapperオブジェクト
    */
-  private static final String tableName = "ProductCatalog";
-
-  /**
-   * DynamoDBのクライアントを取得する。
-   * @return AmazonDynamoDBオブジェクト
-   */
-  private AmazonDynamoDB getClient() {
+  protected DynamoDBMapper setupMapper() {
     AmazonDynamoDB client =
         AmazonDynamoDBClientBuilder.standard()
             .withEndpointConfiguration(
                 new EndpointConfiguration(amazonDynamoDBEndpoint, amazonDynamoDBRegion))
             .build();
-    return client;
+
+    DynamoDBMapperConfig mapperConfig =
+        DynamoDBMapperConfig.builder()
+            .withSaveBehavior(SaveBehavior.CLOBBER)
+            .withConsistentReads(ConsistentReads.CONSISTENT)
+            .withTableNameOverride(null)
+            .withPaginationLoadingStrategy(PaginationLoadingStrategy.LAZY_LOADING)
+            .build();
+
+    return new DynamoDBMapper(client, mapperConfig);
   }
+}
 ```
 
-## マッピング用クラスの作成
+### dao
 
-`com.haruspring.sample.dynamodb.sdk.repository.dao.ProductCatalogDao`をマッピングオブジェクトとして作成する。
+DB の取得結果を格納する dao を作成する。DynamoDB とマッピングするための設定を行う。
 
 ```java
+package com.haruspring.sample.dynamodb.sdk.repository.dao;
+
 /**
  * ProductCatalogテーブルのマッピング用オブジェクト。
+ *
  * @author haruspring-jokt
  */
-@Data // lombokのアノテーション
-@DynamoDBTable(tableName="ProductCatalog") // 対応するテーブル名を宣言
+@Data
+@DynamoDBTable(tableName = "ProductCatalog")
 public class ProductCatalogDao {
 
-  // プライマリキーには@DynamoDBHashKeyを付与する。
   @DynamoDBHashKey(attributeName = "Id")
   private Integer id;
 
+  @DynamoDBAttribute(attributeName = "Brand")
   private String brand;
+
+  @DynamoDBAttribute(attributeName = "Description")
   private String description;
+
+  @DynamoDBAttribute(attributeName = "Price")
   private Integer price;
-  private Set<String> color;
+
+  @DynamoDBAttribute(attributeName = "Color")
+  private List<String> color;
+
+  @DynamoDBAttribute(attributeName = "ProductCategory")
   private String productCategory;
 
   @DynamoDBAttribute(attributeName = "Title")
   private String title;
 
+  @DynamoDBAttribute(attributeName = "BicycleType")
   private String bicycleType;
+
+  @DynamoDBAttribute(attributeName = "InPublication")
   private Boolean inPublication;
 
-  // 通常名前が一致するフィールドを作成すればよいが、@DynamoDBAttributeによって指定することもできる。
   @DynamoDBAttribute(attributeName = "ISBN")
   private String isbn;
 
+  @DynamoDBAttribute(attributeName = "PageCount")
   private Integer pageCount;
 
   @DynamoDBAttribute(attributeName = "Authors")
-  private Set<String> authors;
+  private List<String> authors;
 
+  @DynamoDBAttribute(attributeName = "Dimensions")
   private String dimensions;
 
-  // @DynamoDBIgnoreによってテーブル内のどの属性にもマッピングされないプロパティを含めることができる。
-  @DynamoDBIgnore
-  private String someProp;
+  // DynamoDBからは無視されるフィールド
+  @DynamoDBIgnore private String someProp;
 }
 ```
 
-## save
+### CRUD
 
-テーブルに1件保存する。
+`ProductCatalogRepository`は、先程つくった`DynamoDBConfig`を継承する。
+
+#### scan
 
 ```java
-  /** 1件のアイテムを追加する。 */
-  public void saveItem() {
-    DynamoDBMapper mapper = new DynamoDBMapper(getClient());
+  /** ProductCatalog内のItemをすべて取得する。 */
+  public List<ProductCatalogDao> scanAllItems() {
+    DynamoDBMapper mapper = super.setupMapper();
+
+    List<ProductCatalogDao> items =
+        mapper.scan(ProductCatalogDao.class, new DynamoDBScanExpression());
+
+    return items;
+  }
+```
+
+`DynamoDBScanExpression`にフィルタなどを設定できる。
+
+```java
+    Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+    eav.put(":val1", new AttributeValue().withN(lowestId));
+
+    DynamoDBScanExpression scanExpression =
+        new DynamoDBScanExpression()
+            .withFilterExpression("Id >= :val1")
+            .withExpressionAttributeValues(eav);
+```
+
+#### save
+
+テーブルに 1 件保存する。
+
+```java
+  public void saveItem(Integer id) {
+    DynamoDBMapper mapper = super.setupMapper();
 
     ProductCatalogDao item = new ProductCatalogDao();
 
-    item.setId(301);
+    item.setId(id);
     item.setTitle("Book 301 Title");
     item.setIsbn("333-3333333333");
-    item.setAuthors(new HashSet<String>(Arrays.asList("Author 1", "Author 2")));
+    item.setAuthors(new ArrayList<>(Arrays.asList("Author 11", "Author 12")));
     item.setSomeProp("Test");
 
     mapper.save(item);
   }
 ```
 
-実行すると1件のレコードが保存される。
+実行すると 1 件のレコードが保存される。
 
 ![](img/2019-05-12-13-33-15.png)
 
-## query
+#### query
 
-SQLで言うSQLECT文の発行。
+SQL で言う SQLECT 文の発行。
 
 ```java
-  /**
-   * 1件のアイテムを取得する。
-   */
-  public void selectOne() {
+  public void selectOne(Integer id) {
+    DynamoDBMapper mapper = super.setupMapper();
+
     ProductCatalogDao partitionKey = new ProductCatalogDao();
 
-    partitionKey.setId(301);
+    partitionKey.setId(id);
     DynamoDBQueryExpression<ProductCatalogDao> queryExpression =
         new DynamoDBQueryExpression<ProductCatalogDao>().withHashKeyValues(partitionKey);
-
-    DynamoDBMapper mapper = new DynamoDBMapper(getClient());
 
     List<ProductCatalogDao> itemList = mapper.query(ProductCatalogDao.class, queryExpression);
 
@@ -146,4 +186,21 @@ Book 301 Title
 [Author 1, Author 2]
 ```
 
+#### delete
 
+`load`してItemを取得してから`delete`する。
+
+```java
+  /**
+   * 1件のアイテムを削除する。
+   *
+   * @param id Id
+   */
+  public void deleteOne(Integer id) {
+    DynamoDBMapper mapper = super.setupMapper();
+
+    ProductCatalogDao item = mapper.load(ProductCatalogDao.class, id);
+
+    mapper.delete(item);
+  }
+```

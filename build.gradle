@@ -2,13 +2,14 @@ plugins {
 	id 'org.springframework.boot' version '2.1.4.RELEASE'
 	id 'java'
 	id 'com.github.sherter.google-java-format' version "0.8"
+	id 'net.ltgt.errorprone' version '0.8'
 }
 
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.haruspring.sample.dynamodb'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 
 configurations {
 	compileOnly {
@@ -35,5 +36,9 @@ dependencies {
 	compile "io.springfox:springfox-swagger2:2.9.2"
 	compile "io.springfox:springfox-swagger-ui:2.9.2"
 	compile "io.springfox:springfox-core:2.9.2"
+
+	// error-prone
+	errorprone 'com.google.errorprone:error_prone_core:2.3.3'
+	compileOnly "com.google.errorprone:error_prone_annotations:2.3.3"
 
 }
