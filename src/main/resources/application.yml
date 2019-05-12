@@ -1,10 +1,14 @@
 logging:
   level:
-    root: INFO
+    root: info
 amazon:
   dynamodb:
     endpoint: http://192.168.99.100:8000
-    resion: ap-northeast-1
-aws:
-  accesskey: key
-  secretkey: key2
+    region: ap-northeast-1
+  aws:
+    accesskey: key
+    secretkey: key2
+spring:
+  devtools:
+    restart:
+      enabled: true
