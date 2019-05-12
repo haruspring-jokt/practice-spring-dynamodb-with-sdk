@@ -1,6 +1,6 @@
 package com.haruspring.sample.dynamodb.sdk.controller;
 
-import com.haruspring.sample.dynamodb.sdk.domain.model.ProductCatalogResponce;
+import com.haruspring.sample.dynamodb.sdk.domain.model.ProductCatalogResponse;
 import com.haruspring.sample.dynamodb.sdk.domain.service.ProductCatalogService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class ProductCatalogController {
   @Autowired private ProductCatalogService service;
 
   @GetMapping("list")
-  public List<ProductCatalogResponce> listProductCatalogResponces() {
+  public List<ProductCatalogResponse> listProductCatalogResponses() {
 
     return service.getList();
   }

@@ -41,4 +41,7 @@ dependencies {
 	errorprone 'com.google.errorprone:error_prone_core:2.3.3'
 	compileOnly "com.google.errorprone:error_prone_annotations:2.3.3"
 
+	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
+	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.3'
+
 }

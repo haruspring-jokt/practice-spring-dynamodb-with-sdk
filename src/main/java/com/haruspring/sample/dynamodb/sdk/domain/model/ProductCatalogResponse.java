@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductCatalogResponce {
+public class ProductCatalogResponse {
 
   private Integer id;
 

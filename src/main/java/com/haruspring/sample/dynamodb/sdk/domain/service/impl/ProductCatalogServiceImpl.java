@@ -1,11 +1,12 @@
 package com.haruspring.sample.dynamodb.sdk.domain.service.impl;
 
-import com.haruspring.sample.dynamodb.sdk.domain.model.ProductCatalogResponce;
+import com.haruspring.sample.dynamodb.sdk.domain.model.ProductCatalogResponse;
 import com.haruspring.sample.dynamodb.sdk.domain.service.ProductCatalogService;
 import com.haruspring.sample.dynamodb.sdk.repository.ProductCatalogRepository;
 import com.haruspring.sample.dynamodb.sdk.repository.dao.ProductCatalogDao;
 import java.util.ArrayList;
 import java.util.List;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,32 +16,21 @@ public class ProductCatalogServiceImpl implements ProductCatalogService {
 
   @Autowired private ProductCatalogRepository repository;
 
+  @Autowired private ModelMapper mapper;
+
   /**
    * すべてのProductCatalogを取得する。
    *
    * @return すべてのProductCatalog
    */
   @Override
-  public List<ProductCatalogResponce> getList() {
+  public List<ProductCatalogResponse> getList() {
     List<ProductCatalogDao> items = repository.scanAllItems();
 
-    List<ProductCatalogResponce> responses = new ArrayList<>();
+    List<ProductCatalogResponse> responses = new ArrayList<>();
 
     for (ProductCatalogDao item : items) {
-      ProductCatalogResponce response = new ProductCatalogResponce();
-      response.setId(item.getId());
-      response.setBrand(item.getBrand());
-      response.setDescription(item.getDescription());
-      response.setPrice(item.getPrice());
-      response.setColor(item.getColor());
-      response.setProductCategory(item.getProductCategory());
-      response.setTitle(item.getTitle());
-      response.setInPublication(item.getInPublication());
-      response.setIsbn(item.getIsbn());
-      response.setPageCount(item.getPageCount());
-      response.setAuthors(item.getAuthors());
-      response.setDimensions(item.getDimensions());
-
+      ProductCatalogResponse response = mapper.map(item, ProductCatalogResponse.class);
       responses.add(response);
     }
 
