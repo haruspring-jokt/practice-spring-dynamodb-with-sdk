@@ -2,7 +2,6 @@ package com.haruspring.sample.dynamodb.sdk.repository;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

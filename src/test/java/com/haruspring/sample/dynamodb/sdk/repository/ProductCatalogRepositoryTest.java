@@ -3,7 +3,6 @@ package com.haruspring.sample.dynamodb.sdk.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
@@ -15,9 +14,7 @@ import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
 import com.amazonaws.services.dynamodbv2.model.PutItemResult;
 import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,10 +77,10 @@ public class ProductCatalogRepositoryTest {
     item.put("Id", new AttributeValue().withN("201"));
     item.put("brand", new AttributeValue().withS("Mountain A"));
     item.put("price", new AttributeValue().withN("100"));
-    item.put("color", new AttributeValue().withL(
-        new AttributeValue().withS("Red"),
-        new AttributeValue().withS("Black")
-    ));
+    item.put(
+        "color",
+        new AttributeValue()
+            .withL(new AttributeValue().withS("Red"), new AttributeValue().withS("Black")));
     item.put("productCategory", new AttributeValue().withS("Bicycle"));
     item.put("title", new AttributeValue().withS("18-Bike-201"));
     item.put("bicycleType", new AttributeValue().withS("Road"));

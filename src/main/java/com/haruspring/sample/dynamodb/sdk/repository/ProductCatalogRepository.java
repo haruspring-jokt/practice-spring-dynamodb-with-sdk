@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class ProductCatalogRepository extends DynamoDBConfig {
+
+  @Autowired private DynamoDBMapper dbMapper;
 
   /** ProductCatalog内のItemをすべて取得する。 */
   public List<ProductCatalogDao> scanAllItems() {
@@ -95,16 +98,30 @@ public class ProductCatalogRepository extends DynamoDBConfig {
     }
   }
 
+  //  /**
+  //   * loadメソッドを使用して、1件のアイテムを取得する。
+  //   *
+  //   * @param id Id
+  //   */
+  //  public void loadOne(Integer id) {
+  //    DynamoDBMapper mapper = super.setupMapper();
+  //
+  //    ProductCatalogDao item = mapper.load(ProductCatalogDao.class, id);
+  //    System.out.println(item);
+  //    return item;
+  //  }
+
   /**
    * loadメソッドを使用して、1件のアイテムを取得する。
    *
    * @param id Id
    */
-  public void loadOne(Integer id) {
-    DynamoDBMapper mapper = super.setupMapper();
+  public ProductCatalogDao loadOne(Integer id) {
+    //    DynamoDBMapper mapper = super.setupMapper();
 
-    ProductCatalogDao item = mapper.load(ProductCatalogDao.class, id);
+    ProductCatalogDao item = dbMapper.load(ProductCatalogDao.class, id);
     System.out.println(item);
+    return item;
   }
 
   /**
@@ -113,10 +130,10 @@ public class ProductCatalogRepository extends DynamoDBConfig {
    * @param id Id
    */
   public void deleteOne(Integer id) {
-    DynamoDBMapper mapper = super.setupMapper();
+    //    DynamoDBMapper mapper = super.setupMapper();
 
-    ProductCatalogDao item = mapper.load(ProductCatalogDao.class, id);
+    ProductCatalogDao item = dbMapper.load(ProductCatalogDao.class, id);
 
-    mapper.delete(item);
+    dbMapper.delete(new ProductCatalogDao().withId(201));
   }
 }

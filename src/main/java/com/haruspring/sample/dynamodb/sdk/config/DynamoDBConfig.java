@@ -9,8 +9,11 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.Consi
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.PaginationLoadingStrategy;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.SaveBehavior;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /** DynamoDBの設定クラス。 */
+@Configuration
 public class DynamoDBConfig {
 
   @Value("${amazon.dynamodb.endpoint}")
@@ -41,5 +44,18 @@ public class DynamoDBConfig {
             .build();
 
     return new DynamoDBMapper(client, mapperConfig);
+  }
+
+  @Bean
+  public AmazonDynamoDB amazonDynamoDB() {
+    return AmazonDynamoDBClientBuilder.standard()
+        .withEndpointConfiguration(
+            new EndpointConfiguration(amazonDynamoDBEndpoint, amazonDynamoDBRegion))
+        .build();
+  }
+
+  @Bean
+  public DynamoDBMapper dynamoDBMapper(AmazonDynamoDB amazonDynamoDB) {
+    return new DynamoDBMapper(amazonDynamoDB);
   }
 }

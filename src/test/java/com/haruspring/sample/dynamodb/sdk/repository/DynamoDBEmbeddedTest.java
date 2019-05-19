@@ -20,9 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-/**
- * テスト用のDynamoDB localが作成されていることを検証するクラス.
- */
+/** テスト用のDynamoDB localが作成されていることを検証するクラス. */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class DynamoDBEmbeddedTest {

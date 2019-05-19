@@ -56,4 +56,9 @@ public class ProductCatalogDao {
   private String dimensions;
 
   @DynamoDBIgnore private String someProp;
+
+  public ProductCatalogDao withId(Integer id) {
+    setId(id);
+    return this;
+  }
 }
