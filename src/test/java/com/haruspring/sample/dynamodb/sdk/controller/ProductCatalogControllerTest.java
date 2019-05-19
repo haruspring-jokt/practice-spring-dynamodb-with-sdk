@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,7 @@ public class ProductCatalogControllerTest {
    * </pre>
    */
   @Test
+  @Ignore
   public void listProductCatalogResponsesTest() throws Exception {
     mockMvc
         .perform(get("/api/v1/product/catalog/list"))

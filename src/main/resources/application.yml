@@ -3,11 +3,11 @@ logging:
     root: info
 amazon:
   dynamodb:
-    endpoint: http://192.168.99.100:8000
+    endpoint: http://localhost:8000
     region: ap-northeast-1
   aws:
-    accesskey: key
-    secretkey: key2
+    accesskey: local
+    secretkey: local
 spring:
   devtools:
     restart:
