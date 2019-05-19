@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div class="container">
+  <div class="row">
+<!--    <div class="col">-->
+<!--      Authenticated successfully as [[${#authentication.name}]]<br/>-->
+<!--      Principal: [[${#authentication.principal}]]-->
+<!--      <div>-->
+<!--        <a th:href="@{/logout}" class="btn btn-primary">Logout</a>-->
+<!--      </div>-->
+<!--    </div>-->
+    <div class="col">
+      Logged user: <span sec:authentication="name"></span>
+      Roles: <span sec:authentication="principal.authorities"></span>
+      <div>
+        <a th:href="@{/logout}" class="btn btn-primary">Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
