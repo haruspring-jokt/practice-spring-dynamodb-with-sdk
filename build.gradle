@@ -62,6 +62,7 @@ dependencies {
     testRuntime("org.junit.jupiter:junit-jupiter-engine")
     testRuntime("org.junit.vintage:junit-vintage-engine")
 
+    compile 'com.google.guava:guava:26.0-jre'
 }
 
 // for JUnit5 and print test logs

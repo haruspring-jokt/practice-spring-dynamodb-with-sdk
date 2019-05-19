@@ -18,10 +18,7 @@ public class AwsDynamoDbLocalTestUtils {
 
   private static final String BASE_LIBRARY_NAME = "sqlite4java";
 
-  /**
-   * Static helper class. <a
-   * href="https://github.com/redskap/aws-dynamodb-java-example-local-testing">引用元</a>
-   */
+  /** Static helper class. */
   private AwsDynamoDbLocalTestUtils() {}
 
   /** Sets the sqlite4java library path system parameter if it is not set already. */

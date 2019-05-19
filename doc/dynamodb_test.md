@@ -72,3 +72,11 @@ test {
 Spring Boot2に関連する注意点としては以下。ほかはJUnit5そのものの使い方に習う。
 
 - `@RunWith(SpringRunner.class)`の代わりに`@ExtendWith(SpringExtension.class)`を使用する
+
+### テスト実行時の注意
+
+`gradle test`では特に問題なくテストが実行される。
+
+IDEから実行する際は、`shorten command line`は`@argFiles`なら通ることまで確認している。
+
+![](img/2019-05-19-21-03-00.png)

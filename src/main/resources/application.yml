@@ -1,6 +1,11 @@
 logging:
   level:
     root: info
+    com:
+      haruspring:
+        sample:
+          dynamodb:
+            sdk: debug
 amazon:
   dynamodb:
     endpoint: http://localhost:8000
