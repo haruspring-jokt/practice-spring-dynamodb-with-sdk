@@ -1,4 +1,4 @@
-package com.haruspring.sample.dynamodb.sdk.repository;
+package com.haruspring.sample.dynamodb.sdk.repository.impl;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -20,13 +20,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
-public class ProductCatalogRepositoryTestMock {
+public class ProductCatalogRepositoryImplTest {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
 
   @Mock private DynamoDBMapper dbMapper;
 
-  @InjectMocks private ProductCatalogRepository repository;
+  @InjectMocks private ProductCatalogRepositoryImpl repository;
 
   @Test
   public void test__loadOne() {

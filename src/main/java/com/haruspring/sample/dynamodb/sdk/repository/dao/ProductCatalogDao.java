@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import java.util.List;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * ProductCatalogテーブルのマッピング用オブジェクト。
@@ -13,6 +14,7 @@ import lombok.Data;
  * @author haruspring-jokt
  */
 @Data
+@ToString
 @DynamoDBTable(tableName = "ProductCatalog")
 public class ProductCatalogDao {
 

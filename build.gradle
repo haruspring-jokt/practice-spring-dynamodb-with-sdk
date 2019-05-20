@@ -54,21 +54,5 @@ dependencies {
     // for repository layer test using DynamoDB local
     testCompile group: 'com.amazonaws', name: 'DynamoDBLocal', version: '1.11.477'
 
-    // for use JUnit5
-    compile("org.junit.jupiter:junit-jupiter-api")
-    testCompile("org.junit.jupiter:junit-jupiter-params")
-    testCompile("org.junit.jupiter:junit-jupiter-migrationsupport")
-    testCompile("org.junit.platform:junit-platform-runner")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine")
-    testRuntime("org.junit.vintage:junit-vintage-engine")
-
     compile 'com.google.guava:guava:26.0-jre'
-}
-
-// for JUnit5 and print test logs
-test {
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
 }
