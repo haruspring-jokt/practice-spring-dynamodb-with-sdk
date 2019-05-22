@@ -51,7 +51,7 @@ public class ProductCatalogControllerIT {
     mockMvc
         .perform(get("/api/v1/product/catalog/list"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(9)))
+        .andExpect(jsonPath("$", hasSize(8)))
         .andExpect(jsonPath("$[0].id").value(201))
         .andExpect(jsonPath("$[0].brand").value("Mountain A"))
         .andExpect(jsonPath("$[0].description").value("201 Description"))
